@@ -1,9 +1,8 @@
 pipeline {
     agent any
     environment {
-        // Define the path to your Node.js installation
-        // This path might be different on your Jenkins agent
-        def NODE_JS_HOME = "/usr/local/bin" 
+        // Correct path for Node.js installed via NVM
+        def NODE_JS_HOME = "/Users/saikethan/.nvm/versions/node/v20.10.0/bin" 
         def PATH = "${NODE_JS_HOME}:${env.PATH}"
     }
     stages {
