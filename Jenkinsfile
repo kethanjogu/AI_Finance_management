@@ -1,32 +1,30 @@
 pipeline {
-  agent any
-  stages {
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+        stage('Prepare Artifacts') {
+            steps {
+                sh 'echo Build successful > artifact.txt'
+            }
+        }
     }
-    stage('Build') {
-      steps {
-        bat """
-        if exist out rmdir /s /q out
-        mkdir out
-        javac -d out src\\hello\\Hello.java
-        """
-      }
+    post {
+        always {
+            archiveArtifacts artifacts: 'artifact.txt, .next/**, public/**', allowEmptyArchive: true
+        }
     }
-    stage('Run') {
-      steps {
-        bat """
-        java -cp out hello.Hello
-        echo Build_OK > artifact.txt
-        """
-      }
-    }
-  }
-  post {
-    always {
-      archiveArtifacts artifacts: 'artifact.txt, out/**', allowEmptyArchive: false
-    }
-  }
 }
