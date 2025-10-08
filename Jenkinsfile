@@ -1,13 +1,21 @@
 pipeline {
     agent any
-    tools {
-        // Use the name of your configured NodeJS installation in Jenkins
-        nodejs 'node' 
+    environment {
+        // Define the path to your Node.js installation
+        // This path might be different on your Jenkins agent
+        def NODE_JS_HOME = "/usr/local/bin" 
+        def PATH = "${NODE_JS_HOME}:${env.PATH}"
     }
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+        stage('Verify Node and NPM') {
+            steps {
+                sh 'node --version'
+                sh 'npm --version'
             }
         }
         stage('Install Dependencies') {
