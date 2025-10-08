@@ -19,7 +19,8 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                // Use --legacy-peer-deps to resolve dependency conflicts
+                sh 'npm install --legacy-peer-deps'
             }
         }
         stage('Build') {
